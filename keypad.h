@@ -48,9 +48,9 @@ char requestValueFromKeypad() {
 
         // Attempt to find a pressed row
         for (int i = 0; i <= sizeof(ROW_PINS) / sizeof(ROW_PINS[0]) - 1; i++) {
-            int value = gpio_get(ROW_PINS[i]);
+            bool value = gpio_get(ROW_PINS[i]);
 
-            if (value == 1) {
+            if (value) {
                 selectedRow = i;
 
                 break;
@@ -67,12 +67,12 @@ char requestValueFromKeypad() {
             // Temporarily set col output to 0 to test if that's the one being selected
             gpio_put(COL_PINS[i], 0);
 
-            int value = gpio_get(ROW_PINS[selectedRow]);
+            bool value = gpio_get(ROW_PINS[selectedRow]);
 
             // Set output back to 1
             gpio_put(COL_PINS[i], 1);
 
-            if (value == 0) {
+            if (value) {
                 selectedCol = i;
 
                 break;
@@ -89,10 +89,10 @@ char requestValueFromKeypad() {
             sleep_ms(10);
 
             // Get button power value
-            int value = gpio_get(ROW_PINS[selectedRow]);
+            bool value = gpio_get(ROW_PINS[selectedRow]);
 
             // Check if button is still pressed
-            if (value == 0) {
+            if (value) {
                 return KEYPAD[selectedRow][selectedCol];
             }
         }
